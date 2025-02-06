@@ -11,5 +11,5 @@ find the exact logically bounded chapter or paragraph. That is when RSS can shin
 ```python
 python rss.py search --init <path> --syn <path> --output <path> --verbose
 ```
-Note:  
-For proper use, you may need to modify the logics of text file reading
+> [!IMPORTANT]
+> For proper use, you may need to modify the logics of text file reading, since it is not adapted to general use and truncated for simplicity. If you find RSS useful, please feel free to make a PR!
