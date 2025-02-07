@@ -11,5 +11,10 @@ find the exact logically bounded chapter or paragraph. That is when RSS can shin
 ```python
 python rss.py search --init <path> --syn <path> --output <path> --verbose
 ```
+Note:
+Ensure you have your VLLM instance running. For example, you can use the following command:  
+```bash
+vllm serve --dtype bfloat16 --max-model-len <your-len> --tensor-parallel-size 2 <your-model> --api-key token-abc123 --gpu-memory-utilization 0.6 --enforce-eager
+```
 > [!IMPORTANT]
 > For proper use, you may need to modify the logics of text file reading, since it is not adapted to general use and truncated for simplicity. If you find RSS useful, please feel free to make a PR!
