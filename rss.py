@@ -13,7 +13,7 @@ from langchain_community.vectorstores import FAISS
 
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.runnables import RunnableMap, RunnablePassthrough
+from langchain_core.runnables import RunnableSerializable, RunnablePassthrough
 from langchain_openai import ChatOpenAI
 
 from rss_prompt import RSS_PROMPT
@@ -25,7 +25,7 @@ from langchain_core.vectorstores import VectorStoreRetriever
 INFERENCE_SERVER: Final[str] = 'http://localhost:8000/v1'
 MODELNAME       : Final[str] = 't-tech/T-pro-it-1.0'
 
-def embed(document: str):
+def embed(document: str) -> FAISS:
     vectorstore = FAISS.from_texts(
         texts=[document],
         embedding=HuggingFaceEmbeddings(
@@ -35,20 +35,20 @@ def embed(document: str):
     )
     return vectorstore
 
-def get_retriever(vectorstore: FAISS):
+def get_retriever(vectorstore: FAISS) -> VectorStoreRetriever:
     retriever = vectorstore.as_retriever(
         search_type="similarity",
         search_kwargs={"k": 5}
     )
     return retriever
 
-def create_rss_chain(retriever: VectorStoreRetriever):
+def create_rss_chain(retriever: VectorStoreRetriever) -> RunnableSerializable:
     prompt = ChatPromptTemplate.from_template(RSS_PROMPT)
     llm = ChatOpenAI(
         model=MODELNAME,
         openai_api_key='token-abc123',
         openai_api_base=INFERENCE_SERVER,
-        max_tokens=8192,
+        max_tokens=4096,
         temperature=0,
     )
     rss_chain = (
